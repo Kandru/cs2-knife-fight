@@ -7,6 +7,7 @@ using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
 using PanoramaVoteManagerAPI;
 using PanoramaVoteManagerAPI.Vote;
+using PanoramaVoteManagerAPI.Enums;
 
 namespace KnifeFight
 {
@@ -71,10 +72,11 @@ namespace KnifeFight
                         {"en", $"KNIFE FIGHT?"},
                         {"de", $"MESSERKAMPF?"},
                     },
-                    10,
+                    15,
                     -1,
                     GetAlivePlayerIds(),
                     99,
+                    VoteFlags.DoNotEndUntilAllVoted,
                     callback: OnVoteResult
                 );
                 var startTime = _voteManager.AddVote(_vote);
