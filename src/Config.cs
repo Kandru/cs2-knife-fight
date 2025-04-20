@@ -10,6 +10,8 @@ namespace KnifeFight
         [JsonPropertyName("enabled")] public bool Enabled { get; set; } = true;
         // debug prints
         [JsonPropertyName("debug")] public bool Debug { get; set; } = false;
+        // SFUI string
+        [JsonPropertyName("sfui_string")] public string SfuiString { get; set; } = "#SFUI_vote_passed_changelevel";
     }
 
     public partial class KnifeFight : BasePlugin, IPluginConfig<PluginConfig>

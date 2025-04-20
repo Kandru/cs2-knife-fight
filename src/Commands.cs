@@ -12,7 +12,7 @@ namespace KnifeFight
         [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY, minArgs: 0, usage: "")]
         public void test(CCSPlayerController player, CommandInfo command)
         {
-            // TODO
+            // TODO: command based knife fight not yet implemented
         }
 
         [ConsoleCommand("knifefight", "KnifeFight admin commands")]

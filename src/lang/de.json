@@ -2,5 +2,6 @@
     "core.debugprint": "[KnifeFight][DEBUG]: {message}",
     "core.config": "[KnifeFight] Konfiguration geladen",
     "admin.unknown_command": "[KnifeFight] Unbekannter Befehl: {command}",
-    "admin.reload": "[KnifeFight] Konfiguration neu geladen"
+    "admin.reload": "[KnifeFight] Konfiguration neu geladen",
+    "knifefight.start": "MESSERKAMPF AKTIVIERT"
 }
