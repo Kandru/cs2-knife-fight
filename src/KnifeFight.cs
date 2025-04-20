@@ -50,7 +50,9 @@ namespace KnifeFight
 
         private HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo info)
         {
-            //ENABLE AFTER DEBUG: if ((bool)GetGameRule("WarmupPeriod")!) return HookResult.Continue;
+            // disable during warmup
+            if ((bool)GetGameRule("WarmupPeriod")!) return HookResult.Continue;
+            // disable if already in knife fight or bomb is planted
             if (_isActive == (true, true)
                 || IsBombPlanted()) return HookResult.Continue;
             CCSPlayerController? victim = @event.Userid;
