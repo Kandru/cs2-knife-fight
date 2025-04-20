@@ -1,0 +1,6 @@
+{
+    "core.debugprint": "[KnifeFight][DEBUG]: {message}",
+    "core.config": "[KnifeFight] Configuration loaded",
+    "admin.unknown_command": "[KnifeFight] Unknown command: {command}",
+    "admin.reload": "[KnifeFight] Configuration reloaded"
+}
