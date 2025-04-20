@@ -135,6 +135,9 @@ namespace KnifeFight
                 MakePlayerGlow(player);
                 // remove player weapons
                 player.RemoveWeapons();
+                // set player health
+                player.MaxHealth = 100;
+                player.Health = 100;
                 // give knife to player
                 Server.NextFrame(() =>
                 {
