@@ -63,6 +63,14 @@ Build release files (to use on a production game server)
   dotnet publish
 ```
 
+Additionally add the dependencies (if not added already for the panorama-vote-manager):
+
+```bash
+git submodule add https://github.com/Kandru/cs2-panorama-vote-manager.git
+git commit -m "added panorama-vote-manager as a submodule"
+git push
+```
+
 ## FAQ
 
 TODO
