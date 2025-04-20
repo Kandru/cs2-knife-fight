@@ -31,9 +31,8 @@ namespace KnifeFight
         private static List<int> GetAlivePlayerIds()
         {
             return [.. Utilities.GetPlayers()
-                .Where(player => player.PawnIsAlive && !player.IsHLTV && !player.IsBot)
-                .Select(player => player.UserId.HasValue ? player.UserId.Value : 0)
-                .Where(id => id != 0)];
+                .Where(player => player.PawnIsAlive && !player.IsHLTV && !player.IsBot && player.UserId.HasValue)
+                .Select(player => player.UserId!.Value)];
         }
 
         public static void ExtendRoundTime(int additionalSeconds)
