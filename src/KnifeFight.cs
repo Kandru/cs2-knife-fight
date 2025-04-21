@@ -136,7 +136,8 @@ namespace KnifeFight
             foreach (CCSPlayerController player in GetAlivePlayers())
             {
                 // make player glow
-                MakePlayerGlow(player);
+                if (Config.Glow)
+                    MakePlayerGlow(player);
                 // remove player weapons
                 player.RemoveWeapons();
                 // give knife to player
@@ -147,23 +148,30 @@ namespace KnifeFight
                         || !player.Pawn.IsValid
                         || player.Pawn.Value == null) return;
                     // give knife
-                    player.GiveNamedItem("weapon_knife");
+                    foreach (string weapon in Config.Weapons)
+                    {
+                        player.GiveNamedItem(weapon);
+                    }
                     // set player health
-                    player.Pawn.Value.MaxHealth = 100;
-                    player.Pawn.Value.Health = 100;
+                    player.Pawn.Value.MaxHealth = Config.Health;
+                    player.Pawn.Value.Health = Config.Health;
                     Utilities.SetStateChanged(player.Pawn.Value, "CBaseEntity", "m_iHealth");
                 });
                 // send message to player
                 player.PrintToCenterAlert(Localizer["knifefight.start"]);
             }
             // disable bombspots
-            ToggleBombspots(false);
+            if (Config.DisableBombspots)
+                ToggleBombspots(false);
             // disable rescue zones
-            ToggleRescueZones(false);
+            if (Config.DisableRescueZones)
+                ToggleRescueZones(false);
             // set round time to 2 minutes
-            ExtendRoundTime(120);
+            if (Config.ExtendTime > 0)
+                ExtendRoundTime(Config.ExtendTime);
             // disallow weapon pick up
-            VirtualFunctions.CCSPlayer_ItemServices_CanAcquireFunc.Hook(OnWeaponCanAcquire, HookMode.Pre);
+            if (Config.DisallowWeaponPickup)
+                VirtualFunctions.CCSPlayer_ItemServices_CanAcquireFunc.Hook(OnWeaponCanAcquire, HookMode.Pre);
             // run ontick event
             RegisterListener<Listeners.OnTick>(OnTick);
         }
@@ -178,52 +186,54 @@ namespace KnifeFight
                 _isActive = (false, false);
                 return;
             }
-            foreach (CCSPlayerController entry in GetAlivePlayers())
-            {
-                if (entry.Pawn == null
-                    || !entry.Pawn.IsValid
-                    || entry.Pawn.Value == null
-                    || entry.Pawn.Value.AbsOrigin == null) continue;
-                // create beam for CT
-                if (entry.Team == CsTeam.CounterTerrorist
-                    && _lastPlayerPos.Item1 != Vector.Zero
-                    && GetVectorDistance(_lastPlayerPos.Item1, entry.Pawn.Value.AbsOrigin) > 50)
-                    CreateBeam(
-                        entry.Pawn.Value.AbsOrigin + new Vector(0, 0, 25),
-                        _lastPlayerPos.Item1,
-                        Color.Blue,
-                        1.5f,
-                        2f
-                    );
-                // create beam for T
-                if (entry.Team == CsTeam.Terrorist
-                    && _lastPlayerPos.Item2 != Vector.Zero
-                    && GetVectorDistance(_lastPlayerPos.Item2, entry.Pawn.Value.AbsOrigin) > 50)
-                    CreateBeam(
-                        entry.Pawn.Value.AbsOrigin + new Vector(0, 0, 25),
-                        _lastPlayerPos.Item2,
-                        Color.Red,
-                        1.5f,
-                        2f
-                    );
-                // update position
-                if (entry.Team == CsTeam.CounterTerrorist
-                    && (_lastPlayerPos.Item1 == Vector.Zero
-                        || GetVectorDistance(_lastPlayerPos.Item1, entry.Pawn.Value.AbsOrigin) > 50))
-                    _lastPlayerPos.Item1 = new Vector(
-                        entry.Pawn.Value.AbsOrigin.X,
-                        entry.Pawn.Value.AbsOrigin.Y,
-                        entry.Pawn.Value.AbsOrigin.Z + 25
-                    );
-                else if (entry.Team == CsTeam.Terrorist
-                    && (_lastPlayerPos.Item2 == Vector.Zero
-                        || GetVectorDistance(_lastPlayerPos.Item2, entry.Pawn.Value.AbsOrigin) > 50))
-                    _lastPlayerPos.Item2 = new Vector(
-                        entry.Pawn.Value.AbsOrigin.X,
-                        entry.Pawn.Value.AbsOrigin.Y,
-                        entry.Pawn.Value.AbsOrigin.Z + 25
-                    );
-            }
+            // update beam
+            if (Config.Beam)
+                foreach (CCSPlayerController entry in GetAlivePlayers())
+                {
+                    if (entry.Pawn == null
+                        || !entry.Pawn.IsValid
+                        || entry.Pawn.Value == null
+                        || entry.Pawn.Value.AbsOrigin == null) continue;
+                    // create beam for CT
+                    if (entry.Team == CsTeam.CounterTerrorist
+                        && _lastPlayerPos.Item1 != Vector.Zero
+                        && GetVectorDistance(_lastPlayerPos.Item1, entry.Pawn.Value.AbsOrigin) > Config.BeamLength)
+                        CreateBeam(
+                            entry.Pawn.Value.AbsOrigin + new Vector(0, 0, 25),
+                            _lastPlayerPos.Item1,
+                            Color.Blue,
+                            Config.BeamThickness,
+                            Config.BeamLifetime
+                        );
+                    // create beam for T
+                    if (entry.Team == CsTeam.Terrorist
+                        && _lastPlayerPos.Item2 != Vector.Zero
+                        && GetVectorDistance(_lastPlayerPos.Item2, entry.Pawn.Value.AbsOrigin) > Config.BeamLength)
+                        CreateBeam(
+                            entry.Pawn.Value.AbsOrigin + new Vector(0, 0, 25),
+                            _lastPlayerPos.Item2,
+                            Color.Red,
+                            Config.BeamThickness,
+                            Config.BeamLifetime
+                        );
+                    // update position
+                    if (entry.Team == CsTeam.CounterTerrorist
+                        && (_lastPlayerPos.Item1 == Vector.Zero
+                            || GetVectorDistance(_lastPlayerPos.Item1, entry.Pawn.Value.AbsOrigin) > Config.BeamLength))
+                        _lastPlayerPos.Item1 = new Vector(
+                            entry.Pawn.Value.AbsOrigin.X,
+                            entry.Pawn.Value.AbsOrigin.Y,
+                            entry.Pawn.Value.AbsOrigin.Z + 25
+                        );
+                    else if (entry.Team == CsTeam.Terrorist
+                        && (_lastPlayerPos.Item2 == Vector.Zero
+                            || GetVectorDistance(_lastPlayerPos.Item2, entry.Pawn.Value.AbsOrigin) > Config.BeamLength))
+                        _lastPlayerPos.Item2 = new Vector(
+                            entry.Pawn.Value.AbsOrigin.X,
+                            entry.Pawn.Value.AbsOrigin.Y,
+                            entry.Pawn.Value.AbsOrigin.Z + 25
+                        );
+                }
         }
     }
 }
