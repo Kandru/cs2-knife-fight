@@ -67,16 +67,18 @@ namespace KnifeFight
             {
                 DebugPrint("vote-based knifefight");
                 _vote = new(
-                    Config.SfuiString,
-                    new Dictionary<string, string> {
+                    sfui: Config.SfuiString,
+                    text: new Dictionary<string, string> {
                         {"en", $"KNIFE FIGHT?"},
                         {"de", $"MESSERKAMPF?"},
                     },
-                    15,
-                    -1,
-                    GetAlivePlayerIds(),
-                    99,
-                    VoteFlags.DoNotEndUntilAllVoted,
+                    time: 15,
+                    team: -1,
+                    playerIDs: GetAlivePlayerIds(),
+                    initiator: 99,
+                    minSuccessPercentage: 0.51f,
+                    minVotes: 2,
+                    flags: VoteFlags.DoNotEndUntilAllVoted,
                     callback: OnVoteResult
                 );
                 var startTime = _voteManager.AddVote(_vote);
