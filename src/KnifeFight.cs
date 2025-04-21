@@ -137,15 +137,19 @@ namespace KnifeFight
                 MakePlayerGlow(player);
                 // remove player weapons
                 player.RemoveWeapons();
-                // set player health
-                player.MaxHealth = 100;
-                player.Health = 100;
                 // give knife to player
                 Server.NextFrame(() =>
                 {
-                    if (player == null) return;
+                    if (player == null
+                        || player.Pawn == null
+                        || !player.Pawn.IsValid
+                        || player.Pawn.Value == null) return;
                     // give knife
                     player.GiveNamedItem("weapon_knife");
+                    // set player health
+                    player.Pawn.Value.MaxHealth = 100;
+                    player.Pawn.Value.Health = 100;
+                    Utilities.SetStateChanged(player.Pawn.Value, "CBaseEntity", "m_iHealth");
                 });
                 // send message to player
                 player.PrintToCenterAlert(Localizer["knifefight.start"]);
