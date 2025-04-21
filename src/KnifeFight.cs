@@ -72,7 +72,7 @@ namespace KnifeFight
                         {"en", $"KNIFE FIGHT?"},
                         {"de", $"MESSERKAMPF?"},
                     },
-                    time: 15,
+                    time: Config.VoteTime,
                     team: -1,
                     playerIDs: GetAlivePlayerIds(),
                     initiator: 99,
