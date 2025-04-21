@@ -77,7 +77,7 @@ namespace KnifeFight
                     playerIDs: GetAlivePlayerIds(),
                     initiator: 99,
                     minSuccessPercentage: 0.51f,
-                    minVotes: 2,
+                    minVotes: 1,
                     flags: VoteFlags.DoNotEndUntilAllVoted,
                     callback: OnVoteResult
                 );
