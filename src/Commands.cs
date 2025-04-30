@@ -10,7 +10,7 @@ namespace KnifeFight
         [ConsoleCommand("kf", "Ask for a Knife Fight")]
         [ConsoleCommand("mk", "Ask for a Knife Fight")]
         [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY, minArgs: 0, usage: "")]
-        public void test(CCSPlayerController player, CommandInfo command)
+        public static void CommandKnifeFight(CCSPlayerController player, CommandInfo command)
         {
             // TODO: command based knife fight not yet implemented
         }
@@ -20,7 +20,7 @@ namespace KnifeFight
         public void CommandMapVote(CCSPlayerController player, CommandInfo command)
         {
             string subCommand = command.GetArg(1);
-            switch (subCommand.ToLower())
+            switch (subCommand.ToLower(System.Globalization.CultureInfo.CurrentCulture))
             {
                 case "reload":
                     Config.Reload();

@@ -18,28 +18,30 @@ namespace KnifeFight
         private static int CountPlayersAlive(CsTeam team)
         {
             return Utilities.GetPlayers()
-                .Where(player => player.PawnIsAlive && !player.IsHLTV && player.Team == team)
-                .Count();
+                .Count(player => player.PawnIsAlive && !player.IsHLTV && player.Team == team);
         }
 
         private static List<CCSPlayerController> GetAlivePlayers()
         {
             return [.. Utilities.GetPlayers()
-                .Where(player => player.PawnIsAlive && !player.IsHLTV)];
+                .Where(static player => player.PawnIsAlive && !player.IsHLTV)];
         }
 
         private static List<int> GetAlivePlayerIds()
         {
             return [.. Utilities.GetPlayers()
-                .Where(player => player.PawnIsAlive && !player.IsHLTV && !player.IsBot && player.UserId.HasValue)
-                .Select(player => player.UserId!.Value)];
+                .Where(static player => player.PawnIsAlive && !player.IsHLTV && !player.IsBot && player.UserId.HasValue)
+                .Select(static player => player.UserId!.Value)];
         }
 
         public static void ExtendRoundTime(int additionalSeconds)
         {
-            var gameRules = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First();
+            CCSGameRulesProxy gameRules = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").First();
             if (gameRules == null)
+            {
                 return;
+            }
+
             gameRules.GameRules!.RoundTime += additionalSeconds;
             Utilities.SetStateChanged(gameRules, "CCSGameRules", "m_iRoundTime");
         }
@@ -61,9 +63,8 @@ namespace KnifeFight
                 modelGlow.AcceptInput("FollowEntity", modelRelay, modelGlow, "!activator");
                 modelGlow.DispatchSpawn();
                 modelGlow.Render = Color.FromArgb(1, 255, 255, 255);
-                if (playerPawn.TeamNum == (int)CsTeam.Terrorist) modelGlow.Glow.GlowColorOverride = Color.Red;
-                else
-                    modelGlow.Glow.GlowColorOverride = Color.Blue;
+                modelGlow.Glow.GlowColorOverride = playerPawn.TeamNum == (int)CsTeam.Terrorist ? Color.Red : Color.Blue;
+
                 modelGlow.Spawnflags = 256u;
                 modelGlow.RenderMode = RenderMode_t.kRenderGlow;
                 modelGlow.Glow.GlowRange = 5000;
@@ -74,42 +75,52 @@ namespace KnifeFight
             }
         }
 
-        private void ToggleBombspots(bool enable = true)
+        private static void ToggleBombspots(bool enable = true)
         {
-            var bombSites = Utilities.FindAllEntitiesByDesignerName<CBombTarget>("func_bomb_target");
-            if (bombSites == null) return;
-            foreach (var bombSite in bombSites)
+            IEnumerable<CBombTarget> bombSites = Utilities.FindAllEntitiesByDesignerName<CBombTarget>("func_bomb_target");
+            if (bombSites == null)
+            {
+                return;
+            }
+
+            foreach (CBombTarget bombSite in bombSites)
             {
                 bombSite.Disabled = !enable;
             }
         }
 
-        private void ToggleRescueZones(bool enable = true)
+        private static void ToggleRescueZones(bool enable = true)
         {
-            var rescueZones = Utilities.FindAllEntitiesByDesignerName<CHostageRescueZone>("func_hostage_rescue");
-            if (rescueZones == null) return;
-            foreach (var rescueZone in rescueZones)
+            IEnumerable<CHostageRescueZone> rescueZones = Utilities.FindAllEntitiesByDesignerName<CHostageRescueZone>("func_hostage_rescue");
+            if (rescueZones == null)
+            {
+                return;
+            }
+
+            foreach (CHostageRescueZone rescueZone in rescueZones)
             {
                 rescueZone.Disabled = !enable;
             }
         }
 
-        private bool IsBombPlanted()
+        private static bool IsBombPlanted()
         {
-            var planted = Utilities.FindAllEntitiesByDesignerName<CPlantedC4>("planted_c4");
-            if (planted == null) return false;
-            return planted.Any();
+            IEnumerable<CPlantedC4> planted = Utilities.FindAllEntitiesByDesignerName<CPlantedC4>("planted_c4");
+            return planted != null && planted.Any();
         }
 
         private static object? GetGameRule(string rule)
         {
-            var ents = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules");
-            foreach (var ent in ents)
+            IEnumerable<CCSGameRulesProxy> ents = Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules");
+            foreach (CCSGameRulesProxy ent in ents)
             {
-                var gameRules = ent.GameRules;
-                if (gameRules == null) continue;
+                CCSGameRules? gameRules = ent.GameRules;
+                if (gameRules == null)
+                {
+                    continue;
+                }
 
-                var property = gameRules.GetType().GetProperty(rule);
+                System.Reflection.PropertyInfo? property = gameRules.GetType().GetProperty(rule);
                 if (property != null && property.CanRead)
                 {
                     return property.GetValue(gameRules);
@@ -123,7 +134,7 @@ namespace KnifeFight
             float dx = a.X - b.X;
             float dy = a.Y - b.Y;
             float dz = a.Z - b.Z;
-            return MathF.Sqrt(dx * dx + dy * dy + dz * dz);
+            return MathF.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
         }
 
         private void CreateBeam(Vector startOrigin, Vector endOrigin, Color? color = null, float width = 1f, float timeout = 2f)
@@ -139,11 +150,15 @@ namespace KnifeFight
             beam.EndPos.Z = endOrigin.Z;
             Utilities.SetStateChanged(beam, "CBeam", "m_vecEndPos");
             if (timeout > 0)
-                AddTimer(timeout, () =>
+            {
+                _ = AddTimer(timeout, () =>
                 {
                     if (beam != null && beam.IsValid)
+                    {
                         beam.Remove();
+                    }
                 });
+            }
         }
     }
 }
