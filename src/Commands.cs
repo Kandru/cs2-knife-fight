@@ -7,14 +7,6 @@ namespace KnifeFight
 {
     public partial class KnifeFight
     {
-        [ConsoleCommand("kf", "Ask for a Knife Fight")]
-        [ConsoleCommand("mk", "Ask for a Knife Fight")]
-        [CommandHelper(whoCanExecute: CommandUsage.CLIENT_ONLY, minArgs: 0, usage: "")]
-        public static void CommandKnifeFight(CCSPlayerController player, CommandInfo command)
-        {
-            // TODO: command based knife fight not yet implemented
-        }
-
         [ConsoleCommand("knifefight", "KnifeFight admin commands")]
         [CommandHelper(whoCanExecute: CommandUsage.SERVER_ONLY, minArgs: 1, usage: "<command>")]
         public void CommandMapVote(CCSPlayerController player, CommandInfo command)
