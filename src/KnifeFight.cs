@@ -145,7 +145,7 @@ namespace KnifeFight
                 return;
             }
 
-            DebugPrint($"Vote was {(success ? "successful" : "unsuccessful")} -> {vote._voters.Count} of {vote.PlayerIDs.Count} have voted");
+            DebugPrint($"Vote was {(success ? "successful" : "unsuccessful")} -> {vote.Voters.Count} of {vote.PlayerIDs.Count} have voted");
             if (_isActive != (true, true) && success)
             {
                 _isActive = (true, true);
