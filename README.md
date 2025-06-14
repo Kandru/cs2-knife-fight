@@ -1,3 +1,6 @@
+> [!CAUTION]
+> Work in progress. Might not work as expected.
+
 # CounterstrikeSharp - Knife Fight
 
 [![UpdateManager Compatible](https://img.shields.io/badge/CS2-UpdateManager-darkgreen)](https://github.com/Kandru/cs2-update-manager/)
@@ -14,7 +17,8 @@ HINT: currently NOT READY
 
 1. Download and extract the latest release from the [GitHub releases page](https://github.com/Kandru/cs2-knife-fight/releases/).
 2. Move the "KnifeFight" folder to the `/addons/counterstrikesharp/plugins/` directory.
-3. Restart the server.
+3. Download and install the [CS2 Panorama Vote Manager](https://github.com/Kandru/cs2-panorama-vote-manager).
+4. Restart the server.
 
 Updating is even easier: simply overwrite all plugin files and they will be reloaded automatically. To automate updates please use our [CS2 Update Manager](https://github.com/Kandru/cs2-update-manager/).
 
