@@ -2,6 +2,6 @@ namespace KnifeFight
 {
     public partial class KnifeFight
     {
-        public override string ModuleVersion => "0.0.15";
+        public override string ModuleVersion => "0.0.16";
     }
 }
