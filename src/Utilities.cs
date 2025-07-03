@@ -18,19 +18,19 @@ namespace KnifeFight
         private static int CountPlayersAlive(CsTeam team)
         {
             return Utilities.GetPlayers()
-                .Count(player => player.PawnIsAlive && !player.IsHLTV && player.Team == team);
+                .Count(player => player.Pawn?.Value?.LifeState == (byte)LifeState_t.LIFE_ALIVE && !player.IsHLTV && player.Team == team);
         }
 
         private static List<CCSPlayerController> GetAlivePlayers()
         {
             return [.. Utilities.GetPlayers()
-                .Where(static player => player.PawnIsAlive && !player.IsHLTV)];
+                .Where(static player => player.Pawn?.Value?.LifeState == (byte)LifeState_t.LIFE_ALIVE && !player.IsHLTV)];
         }
 
         private static List<int> GetAlivePlayerIds()
         {
             return [.. Utilities.GetPlayers()
-                .Where(static player => player.PawnIsAlive && !player.IsHLTV && !player.IsBot && player.UserId.HasValue)
+                .Where(static player => player.Pawn?.Value?.LifeState == (byte)LifeState_t.LIFE_ALIVE && !player.IsHLTV && !player.IsBot)
                 .Select(static player => player.UserId!.Value)];
         }
 
