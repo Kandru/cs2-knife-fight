@@ -3,5 +3,7 @@
     "core.config": "[KnifeFight] Konfiguration geladen",
     "admin.unknown_command": "[KnifeFight] Unbekannter Befehl: {command}",
     "admin.reload": "[KnifeFight] Konfiguration neu geladen",
-    "knifefight.start": "MESSERKAMPF AKTIVIERT"
+    "knifefight.start": "MESSERKAMPF AKTIVIERT",
+    "knifefight.vote.started": "1V1: MESSERKAMPF?",
+    "knifefight.vote.failed": "1V1: MESSERKAMPF ABGELEHNT!"
 }

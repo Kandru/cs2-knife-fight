@@ -77,7 +77,9 @@ namespace KnifeFight
             {
                 return HookResult.Continue;
             }
-
+            // announce knife fight for all
+            Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
+            // use vote manager if possible
             if (_voteManager != null)
             {
                 DebugPrint("vote-based knifefight");
@@ -102,6 +104,8 @@ namespace KnifeFight
             else
             {
                 DebugPrint("command-based knifefight");
+                // print debug message if PanoramaVoteManager API is not available
+                Server.PrintToChatAll(Localizer["core.debugprint"].Value.Replace("{message}", "PanoramaVoteManager API not available. Please install!"));
                 // TODO: not yet implemented
             }
             return HookResult.Continue;
@@ -150,6 +154,10 @@ namespace KnifeFight
             {
                 _isActive = (true, true);
                 InitializeKnifeFight();
+            }
+            else
+            {
+                Server.PrintToChatAll(Localizer["knifefight.vote.failed"]);
             }
         }
 
