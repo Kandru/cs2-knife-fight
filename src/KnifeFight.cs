@@ -69,8 +69,8 @@ namespace KnifeFight
                 return HookResult.Continue;
             }
 
-            int aliveCT = CountPlayersAlive(CsTeam.CounterTerrorist) - (victim.Team == CsTeam.CounterTerrorist ? 1 : 0);
-            int aliveT = CountPlayersAlive(CsTeam.Terrorist) - (victim.Team == CsTeam.Terrorist ? 1 : 0);
+            int aliveCT = CountPlayersAlive(CsTeam.CounterTerrorist);
+            int aliveT = CountPlayersAlive(CsTeam.Terrorist);
             if (!Config.Enabled
                 || aliveCT != 1
                 || aliveT != 1)
