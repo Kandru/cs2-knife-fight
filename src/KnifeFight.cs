@@ -82,10 +82,11 @@ namespace KnifeFight
             Server.NextFrame(
                 () =>
                 {
+                    List<int> alivePlayers = GetAlivePlayerIds();
                     // announce knife fight for all
                     Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
                     // use vote manager if possible
-                    if (_voteManager != null)
+                    if (_voteManager != null && alivePlayers.Count > 0)
                     {
                         DebugPrint("vote-based knifefight");
                         _vote = new(
@@ -96,7 +97,7 @@ namespace KnifeFight
                             },
                             time: Config.VoteTime,
                             team: -1,
-                            playerIDs: GetAlivePlayerIds(),
+                            playerIDs: alivePlayers,
                             initiator: 99,
                             minSuccessPercentage: 0.51f,
                             minVotes: 1,
