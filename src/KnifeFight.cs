@@ -77,37 +77,44 @@ namespace KnifeFight
             {
                 return HookResult.Continue;
             }
-            // announce knife fight for all
-            Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
-            // use vote manager if possible
-            if (_voteManager != null)
-            {
-                DebugPrint("vote-based knifefight");
-                _vote = new(
-                    sfui: Config.SfuiString,
-                    text: new Dictionary<string, string> {
+            // delay actions a frame to allow game to replicate kill event through all
+            // cs2 internal systems
+            Server.NextFrame(
+                () =>
+                {
+                    // announce knife fight for all
+                    Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
+                    // use vote manager if possible
+                    if (_voteManager != null)
+                    {
+                        DebugPrint("vote-based knifefight");
+                        _vote = new(
+                            sfui: Config.SfuiString,
+                            text: new Dictionary<string, string> {
                         {"en", $"KNIFE FIGHT?"},
                         {"de", $"MESSERKAMPF?"},
-                    },
-                    time: Config.VoteTime,
-                    team: -1,
-                    playerIDs: GetAlivePlayerIds(),
-                    initiator: 99,
-                    minSuccessPercentage: 0.51f,
-                    minVotes: 1,
-                    flags: VoteFlags.DoNotEndUntilAllVoted,
-                    callback: OnVoteResult
-                );
-                int startTime = _voteManager.AddVote(_vote);
-                DebugPrint($"vote will start in approx. {startTime} seconds");
-            }
-            else
-            {
-                DebugPrint("command-based knifefight");
-                // print debug message if PanoramaVoteManager API is not available
-                Server.PrintToChatAll(Localizer["core.debugprint"].Value.Replace("{message}", "PanoramaVoteManager API not available. Please install!"));
-                // TODO: not yet implemented
-            }
+                            },
+                            time: Config.VoteTime,
+                            team: -1,
+                            playerIDs: GetAlivePlayerIds(),
+                            initiator: 99,
+                            minSuccessPercentage: 0.51f,
+                            minVotes: 1,
+                            flags: VoteFlags.DoNotEndUntilAllVoted,
+                            callback: OnVoteResult
+                        );
+                        int startTime = _voteManager.AddVote(_vote);
+                        DebugPrint($"vote will start in approx. {startTime} seconds");
+                    }
+                    else
+                    {
+                        DebugPrint("command-based knifefight");
+                        // print debug message if PanoramaVoteManager API is not available
+                        Server.PrintToChatAll(Localizer["core.debugprint"].Value.Replace("{message}", "PanoramaVoteManager API not available. Please install!"));
+                        // TODO: not yet implemented
+                    }
+                }
+            );
             return HookResult.Continue;
         }
 
