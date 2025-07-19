@@ -182,8 +182,14 @@ namespace KnifeFight
             {
                 return;
             }
+            List<CCSPlayerController> alivePlayers = GetAlivePlayers();
+            // stop if not enough players are alive
+            if (alivePlayers.Count != 2)
+            {
+                return;
+            }
             // prepare each player
-            foreach (CCSPlayerController player in GetAlivePlayers())
+            foreach (CCSPlayerController player in alivePlayers)
             {
                 // make player glow
                 if (Config.Glow)
