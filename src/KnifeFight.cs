@@ -79,43 +79,7 @@ namespace KnifeFight
             }
             // delay actions a frame to allow game to replicate kill event through all
             // cs2 internal systems
-            Server.NextFrame(
-                () =>
-                {
-                    List<int> alivePlayers = GetAlivePlayerIds();
-                    // announce knife fight for all
-                    Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
-                    // use vote manager if possible
-                    if (_voteManager != null && alivePlayers.Count > 0)
-                    {
-                        DebugPrint("vote-based knifefight");
-                        _vote = new(
-                            sfui: Config.SfuiString,
-                            text: new Dictionary<string, string> {
-                        {"en", $"KNIFE FIGHT?"},
-                        {"de", $"MESSERKAMPF?"},
-                            },
-                            time: Config.VoteTime,
-                            team: -1,
-                            playerIDs: alivePlayers,
-                            initiator: 99,
-                            minSuccessPercentage: 0.51f,
-                            minVotes: 1,
-                            flags: VoteFlags.DoNotEndUntilAllVoted,
-                            callback: OnVoteResult
-                        );
-                        int startTime = _voteManager.AddVote(_vote);
-                        DebugPrint($"vote will start in approx. {startTime} seconds");
-                    }
-                    else
-                    {
-                        DebugPrint("command-based knifefight");
-                        // print debug message if PanoramaVoteManager API is not available
-                        Server.PrintToChatAll(Localizer["core.debugprint"].Value.Replace("{message}", "PanoramaVoteManager API not available. Please install!"));
-                        // TODO: not yet implemented
-                    }
-                }
-            );
+            Server.NextFrame(() => StartVote());
             return HookResult.Continue;
         }
 
@@ -148,6 +112,48 @@ namespace KnifeFight
             }
             // disallow weapon pick up if not a knife
             return !vdata.Name.Contains("knife") ? HookResult.Stop : HookResult.Continue;
+        }
+
+        public void StartVote()
+        {
+            // check amount of players alive
+            List<int> alivePlayers = GetAlivePlayerIds();
+            // stop if not enough players are alive
+            if (alivePlayers.Count != 2)
+            {
+                return;
+            }
+            // use vote manager if possible
+            if (_voteManager != null)
+            {
+                DebugPrint("vote-based knifefight");
+                // announce knife fight for all
+                Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
+                _vote = new(
+                    sfui: Config.SfuiString,
+                    text: new Dictionary<string, string> {
+                {"en", $"KNIFE FIGHT?"},
+                {"de", $"MESSERKAMPF?"},
+                    },
+                    time: Config.VoteTime,
+                    team: -1,
+                    playerIDs: alivePlayers,
+                    initiator: 99,
+                    minSuccessPercentage: 0.51f,
+                    minVotes: 1,
+                    flags: VoteFlags.DoNotEndUntilAllVoted,
+                    callback: OnVoteResult
+                );
+                int startTime = _voteManager.AddVote(_vote);
+                DebugPrint($"vote will start in approx. {startTime} seconds");
+            }
+            else
+            {
+                DebugPrint("command-based knifefight");
+                // print debug message if PanoramaVoteManager API is not available
+                Server.PrintToChatAll(Localizer["core.debugprint"].Value.Replace("{message}", "PanoramaVoteManager API not available. Please install!"));
+                // TODO: not yet implemented
+            }
         }
 
         public void OnVoteResult(Vote vote, bool success)
