@@ -3,6 +3,7 @@
     "core.config": "[KnifeFight] Configuration loaded",
     "admin.unknown_command": "[KnifeFight] Unknown command: {command}",
     "admin.reload": "[KnifeFight] Configuration reloaded",
+    "admin.test": "[KnifeFight] Testing Panorama Vote Manager",
     "knifefight.start": "KNIFE FIGHT STARTED",
     "knifefight.vote.started": "1V1: KNIFE FIGHT?",
     "knifefight.vote.failed": "1V1: KNIFE FIGHT DECLINED!"
