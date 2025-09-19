@@ -33,11 +33,11 @@ namespace KnifeFight
             try
             {
                 _voteManager = VoteAPI.Get();
+                Console.WriteLine($"Successfully got PanoramaVoteManager API");
             }
             catch (Exception ex)
             {
-                DebugPrint($"Failed to get PanoramaVoteManager API: {ex.Message}");
-                // You might want to log this properly depending on your logging setup
+                Console.WriteLine($"Failed to get PanoramaVoteManager API: {ex.Message}");
             }
         }
 
