@@ -79,7 +79,7 @@ namespace KnifeFight
             }
             // delay actions a frame to allow game to replicate kill event through all
             // cs2 internal systems
-            Server.NextFrame(() => StartVote());
+            Server.NextFrame(StartVote);
             return HookResult.Continue;
         }
 
@@ -117,7 +117,7 @@ namespace KnifeFight
         public void StartVote()
         {
             // check amount of players alive
-            List<int> alivePlayers = GetAlivePlayerIds();
+            List<CCSPlayerController> alivePlayers = GetAlivePlayers();
             // stop if not enough players are alive
             if (alivePlayers.Count != 2)
             {
@@ -128,7 +128,10 @@ namespace KnifeFight
             {
                 DebugPrint("vote-based knifefight");
                 // announce knife fight for all
-                Server.PrintToChatAll(Localizer["knifefight.vote.started"]);
+                Server.PrintToChatAll(Localizer["knifefight.vote.started"].Value
+                    .Replace("{name1}", alivePlayers[0].PlayerName)
+                    .Replace("{name2}", alivePlayers[1].PlayerName)
+                );
                 _vote = new(
                     sfui: Config.SfuiString,
                     text: new Dictionary<string, string> {
@@ -137,7 +140,7 @@ namespace KnifeFight
                     },
                     time: Config.VoteTime,
                     team: -1,
-                    playerIDs: alivePlayers,
+                    playerIDs: [.. alivePlayers.Select(static player => player.UserId!.Value)],
                     initiator: 99,
                     minSuccessPercentage: 0.51f,
                     minVotes: 1,

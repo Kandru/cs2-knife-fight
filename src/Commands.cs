@@ -21,6 +21,11 @@ namespace KnifeFight
                     command.ReplyToCommand(Localizer["admin.reload"]);
                     break;
                 case "test":
+                    if (_voteManager == null)
+                    {
+                        command.ReplyToCommand("vote manager api not found");
+                        return;
+                    }
                     _vote = new(
                         sfui: Config.SfuiString,
                         text: new Dictionary<string, string> {

@@ -4,7 +4,7 @@
     "admin.unknown_command": "[KnifeFight] Unbekannter Befehl: {command}",
     "admin.reload": "[KnifeFight] Konfiguration neu geladen",
     "admin.test": "[KnifeFight] Teste Panorama Vote Manager",
-    "knifefight.start": "MESSERKAMPF AKTIVIERT",
-    "knifefight.vote.started": "1V1: MESSERKAMPF?",
-    "knifefight.vote.failed": "1V1: MESSERKAMPF ABGELEHNT!"
+    "knifefight.start": "[KnifeFight] gestartet!",
+    "knifefight.vote.started": "[KnifeFight] {green}{name1}{default} vs {green}{name2}{default} - MESSERKAMPF?",
+    "knifefight.vote.failed": "[KnifeFight] wurde abgelehnt!"
 }

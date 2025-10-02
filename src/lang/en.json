@@ -4,7 +4,7 @@
     "admin.unknown_command": "[KnifeFight] Unknown command: {command}",
     "admin.reload": "[KnifeFight] Configuration reloaded",
     "admin.test": "[KnifeFight] Testing Panorama Vote Manager",
-    "knifefight.start": "KNIFE FIGHT STARTED",
-    "knifefight.vote.started": "1V1: KNIFE FIGHT?",
-    "knifefight.vote.failed": "1V1: KNIFE FIGHT DECLINED!"
+    "knifefight.start": "[KnifeFight] started!",
+    "knifefight.vote.started": "[KnifeFight] {green}{name1}{default} vs {green}{name2}{default} - KNIFE FIGHT?",
+    "knifefight.vote.failed": "[KnifeFight] was declined!"
 }
