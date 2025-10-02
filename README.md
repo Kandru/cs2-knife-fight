@@ -1,5 +1,8 @@
+> [!TIP]
+> You can test this plug-in by joining our community server via `connect server.counterstrike.party:27030` or via https://counterstrike.party
+
 > [!CAUTION]
-> Work in progress. Might not work as expected.
+> BETA - Work in progress! Does work but may be ugly here and there.
 
 # CounterstrikeSharp - Knife Fight
 
@@ -10,8 +13,6 @@
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=C2AVYKGVP9TRG)
 
 A simple plug-in that allows players to have a knife fight when only one player from each team is alive. This works standalone as well with our Panorama Vote Manager plug-in. This integration will automatically start a vote between the two players to ask for a knife fight. Otherwise a command can be used to start a knife fight.
-
-HINT: currently NOT READY
 
 ## Installation
 
