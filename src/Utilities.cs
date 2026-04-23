@@ -66,7 +66,7 @@ namespace KnifeFight
                 modelGlow.Glow.GlowColorOverride = playerPawn.TeamNum == (int)CsTeam.Terrorist ? Color.Red : Color.Blue;
 
                 modelGlow.Spawnflags = 256u;
-                modelGlow.RenderMode = RenderMode_t.kRenderGlow;
+                modelGlow.RenderMode = RenderMode_t.kRenderNormal;
                 modelGlow.Glow.GlowRange = 5000;
                 modelGlow.Glow.GlowTeam = -1;
                 modelGlow.Glow.GlowType = 3;
